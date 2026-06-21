@@ -65,3 +65,7 @@ jobs:
           
       - name: Check manifest
         run: docker buildx imagetools inspect ${{ env.REGISTRY }}/${{ steps.image.outputs.name }}:${{ steps.meta.outputs.version }}
+
+      - name: Trigger Coolify redeploy
+        if: github.ref == 'refs/heads/main'
+        run: curl -X POST "${{ secrets.COOLIFY_WEBHOOK_URL }}"
